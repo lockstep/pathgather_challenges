@@ -3,10 +3,13 @@ var ctrl = ngModule('challenge.controllers');
 var tileCtrl = [
   '$scope', 'Game',
   function($scope, Game) {
-    $scope.isOnThisTile = function() {
-      var user = Game.users[0];
-      return user.currentTile == $scope.tileNumber;
+    var vm = this;
+
+    vm.users = function() {
+      return Game.users;
     }
+
+    return vm;
   }
 ];
 

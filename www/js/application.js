@@ -9,70 +9,11 @@ function ngModule(name, dependencies) {
 }
 
 angular.module('FEChallenge', [
+  'ngAnimate',
   'challenge.controllers',
   'challenge.services',
   'challenge.directives'
 ]);
-
-var services = ngModule('challenge.services');
-
-services.service("Game", [
-  'Rules',
-  function(Rules) {
-    var _game;
-    function dice() {
-      return Math.floor((Math.random() * 6) + 1);
-    }
-
-    function move(user) {
-      var moves = dice();
-      var nextTile = user.currentTile + moves;
-
-      nextTile = nextTile % 16;
-
-      if (nextTile == 0) {
-        nextTile = 1;
-      }
-
-      user.currentTile = nextTile;
-
-      var nextState = Rules.get(user.currentTile);
-      user.points += nextState.points;
-
-      return nextState;
-    }
-
-    _game = {
-      currentTile: 1,
-      move: move,
-      users: []
-    }
-
-    return _game;
-  }
-]);
-
-var ctrls = ngModule('challenge.controllers');
-
-var moveCtrl = [
-  '$scope', 'Game', 'UserFactory',
-  function($scope, Game, UserFactory) {
-    var user = new UserFactory({ name: 'Karun' });
-
-    Game.users.push(user);
-
-    $scope.move = function() {
-      var nextState = Game.move(user);
-      $scope.currentMessage = (nextState || {}).message;
-    }
-
-    $scope.points = function() {
-      return user.points;
-    }
-  }
-];
-
-ctrls.controller("MoveCtrl", moveCtrl);
 
 var ctrls = ngModule('challenge.controllers');
 
@@ -98,6 +39,82 @@ var boardDirective = function() {
 }
 
 directives.directive("board", boardDirective);
+
+var ctrls = ngModule('challenge.controllers');
+
+var gameCtrl = [
+  '$scope', 'Game', 'UserFactory',
+  function($scope, Game, UserFactory) {
+    var vm = this;
+
+    vm.users = [
+      new UserFactory({ name: 'Paul' }),
+      new UserFactory({ name: 'Jan' }),
+      new UserFactory({ name: 'Mac' })
+    ]
+
+    angular.forEach(vm.users, function(u) {
+      Game.users.push(u);
+    })
+
+    vm.move = Game.move;
+
+    return vm;
+  }
+];
+
+ctrls.controller("GameCtrl", gameCtrl);
+
+var directives = ngModule('challenge.directives');
+
+directives.directive("game", [
+  function() {
+    var linkFn = function(scope, element, attrs) {
+    }
+
+    return {
+      restrict: 'E',
+      link: linkFn,
+      scope: {
+        tileNumber: '=',
+        position: '@'
+      },
+      replace: true,
+      controller: 'GameCtrl as game',
+      templateUrl: '/templates/game/layout.html'
+    }
+  }
+]);
+
+var services = ngModule('challenge.services');
+
+services.service("Game", function() {
+  var _game;
+  function rollDice() {
+    return Math.floor((Math.random() * 6) + 1);
+  }
+
+  function move(user) {
+    var moves = rollDice();
+    var nextTile = user.currentTile + moves;
+
+    nextTile = nextTile % 16;
+
+    if (nextTile == 0) {
+      nextTile = 1;
+    }
+
+    user.moveTo(nextTile);
+  }
+
+  _game = {
+    currentTile: 1,
+    move: move,
+    users: []
+  }
+
+  return _game;
+});
 
 var app = ngModule('challenge.services');
 
@@ -137,10 +154,13 @@ var ctrl = ngModule('challenge.controllers');
 var tileCtrl = [
   '$scope', 'Game',
   function($scope, Game) {
-    $scope.isOnThisTile = function() {
-      var user = Game.users[0];
-      return user.currentTile == $scope.tileNumber;
+    var vm = this;
+
+    vm.users = function() {
+      return Game.users;
     }
+
+    return vm;
   }
 ];
 
@@ -161,7 +181,7 @@ directives.directive("tile", [
         position: '@'
       },
       replace: true,
-      controller: 'TileCtrl',
+      controller: 'TileCtrl as tile',
       templateUrl: '/templates/tiles/tile.html'
     }
   }
@@ -169,16 +189,52 @@ directives.directive("tile", [
 
 var services = ngModule('challenge.services');
 
-services.factory("UserFactory", function() {
+services.factory("UserFactory", ['$interval', 'Rules', function($interval, Rules) {
   var _user = function(attrs) {
-    this.points = 0;
+    var user = this;
 
-    for(var key in attrs) {
-      this.name = attrs[key];
+    function initialize() {
+      user.points = 0;
+      user.message = '';
+      user.moving = false;
+      user.currentTile = 1;
+      user.color = randomRGBColor();
+
+      for(var key in attrs) {
+        user[key] = attrs[key];
+      }
     }
 
-    this.currentTile = 1;
+    user.moveTo = function(tileNo) {
+      var nextState = Rules.get(tileNo);
+
+      this.moving = true;
+      this.points += (nextState && nextState.points) || 0;
+      this.message = nextState && nextState.message;
+
+      user.moveInterval = $interval(function() {
+        user.currentTile += 1;
+        if (user.currentTile > 16) {
+          user.currentTile = 1;
+        }
+
+        if (user.currentTile == tileNo) {
+          user.moving = false;
+          $interval.cancel(user.moveInterval);
+        }
+      }, 400);
+    }
+
+    function randomRGBComponent() {
+      return Math.round(Math.random() * 255);
+    }
+
+    function randomRGBColor() {
+      return 'rgb(' + randomRGBComponent() + ', ' + randomRGBComponent() + ', ' + randomRGBComponent() + ')';
+    }
+
+    initialize();
   };
 
   return _user;
-});
+}]);

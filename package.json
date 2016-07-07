@@ -19,6 +19,7 @@
   "homepage": "https://github.com/karunsiri/fechallenge#readme",
   "dependencies": {
     "angular": "^1.5.7",
+    "angular-animate": "^1.5.7",
     "bootstrap": "^3.3.6",
     "express": "^4.14.0",
     "gulp": "^3.9.1",

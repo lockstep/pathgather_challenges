@@ -1,7 +1,36 @@
+.board-row {
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.board-container {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .tile {
   width: 20%;
+  height: 100px;
   box-sizing: border-box;
   border: 1px solid #000000;
 
   float: left
+}
+
+tile-user-name {
+  padding-left: 5px;
+}
+
+.tile-user-name.ng-hide-add {
+  -webkit-animation: rotateOut 0.25s;
+  animation: rotateOut 0.25s;
+  display: inline-block !important;
+}
+
+.tile-user-name.ng-hide-remove {
+  -webkit-animation: rotateIn 0.25s;
+  animation: rotateIn 0.25s;
+  display: inline-block !important;
 }

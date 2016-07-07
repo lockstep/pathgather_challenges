@@ -11,6 +11,7 @@ watch = require('gulp-watch');
 paths = {
   lib: [
     './node_modules/angular/angular.js',
+    './node_modules/angular-animate/angular-animate.js',
     './node_modules/bootstrap/dist/js/bootstrap.js'
   ],
   css: [

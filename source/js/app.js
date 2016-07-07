@@ -9,6 +9,7 @@ function ngModule(name, dependencies) {
 }
 
 angular.module('FEChallenge', [
+  'ngAnimate',
   'challenge.controllers',
   'challenge.services',
   'challenge.directives'

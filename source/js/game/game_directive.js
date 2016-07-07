@@ -1,6 +1,6 @@
 var directives = ngModule('challenge.directives');
 
-directives.directive("tile", [
+directives.directive("game", [
   function() {
     var linkFn = function(scope, element, attrs) {
     }
@@ -13,8 +13,8 @@ directives.directive("tile", [
         position: '@'
       },
       replace: true,
-      controller: 'TileCtrl as tile',
-      templateUrl: '/templates/tiles/tile.html'
+      controller: 'GameCtrl as game',
+      templateUrl: '/templates/game/layout.html'
     }
   }
 ]);

@@ -1,0 +1,25 @@
+<div class="game">
+  <board></board>
+
+  <div class="container">
+    <div class="clearfix">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-4" ng-repeat="user in game.users">
+        <div class="panel panel-default">
+          <div class="panel-heading" ng-style="{ color: user.color }">
+            {{ user.name }}: {{ user.points }}
+          </div>
+
+          <div class="panel-body">
+            <div><strong>Message</strong>: {{ user.message }} </div>
+            <div>
+              <a ng-click="game.move(user)" class="btn btn-primary" ng-disabled="user.moving">
+                Move
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
