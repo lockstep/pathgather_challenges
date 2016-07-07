@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="FEChallenge">
+  <head>
+    <title>FE Challenge</title>
+    <link rel="stylesheet" type="text/css" href="css/application.css">
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/libraries.js"></script>
+    <script type="text/javascript" src="js/application.js"></script>
+  </head>
+
+  <body>
+    <board></board>
+
+    <div class="container" ng-controller="MoveCtrl">
+      <p ng-show="currentMessage">{{ currentMessage }}</p>
+      <div class="clearfix">&nbsp;</div>
+
+      <a ng-click="move()" class="btn btn-primary">
+        MOVE (score: {{ points() }})
+      </a>
+
+      <div class="clearfix">&nbsp;</div>
+    </div>
+  </body>
+</html>
