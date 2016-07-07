@@ -1,0 +1,29 @@
+<div>
+  <% @courses.each do |course| %>
+    <div>
+      <label class="control-label">ID</label>
+      <%= course.course_id %>
+    </div>
+
+    <div>
+      <label class="control-label">Name</label>
+      <%= course.name %>
+    </div>
+
+    <div>
+      <label class="control-label">Description</label>
+      <%= course.description %>
+    </div>
+
+    <div>
+      <label class="control-label">Start Date</label>
+      <%= course.start_date %>
+    </div>
+
+    <div>
+      <label class="control-label">URL</label>
+      <%= link_to course.url, course.url, target: '_blank' %>
+    </div>
+    <hr />
+  <% end %>
+</div>
