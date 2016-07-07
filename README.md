@@ -1,1 +1,3 @@
-# pathgather_challenges
+# Pathgather Challenges
+
+Submit PRs with your solutions here!
