@@ -1,0 +1,10 @@
+<div class="tile" ng-class="{ 'pull-left': position == 'left', 'pull-right': position == 'right' }">
+  <span class="text-muted">{{ tileNumber }}</span>
+
+  <span class="tile-user-name"
+    ng-style="{ color: user.color }"
+    ng-repeat="user in tile.users()"
+    ng-show="user.currentTile == tileNumber">
+    [{{ user.name }}]
+  </span>
+</div>
