@@ -12,7 +12,7 @@ namespace :coursera do
         cc.course_type = c.courseType
         cc.course_id = c.id
         cc.preview_link = c.previewLink rescue nil
-        cc.start_date = Time.at(c.startDate) rescue nil
+        cc.start_date = Time.at(c.startDate / 1000) rescue nil
         cc.description = c.description rescue nil
         cc.logo_url = c.photoUrl rescue nil
       end
