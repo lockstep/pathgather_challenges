@@ -5,7 +5,9 @@ describe CoursesController, type: :request do
     context 'list courses' do
       it 'connects successfully' do
         get "/courses"
-        # expect(response_body['courses']).not_to be_nil
+        response_body = JSON.parse(response.body)
+        expect(response_body.count).not_to eq 0
+        expect(response_body[0]['name']).not_to be_nil
       end
     end
   end
