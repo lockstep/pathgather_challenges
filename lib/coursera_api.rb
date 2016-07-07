@@ -3,11 +3,12 @@ require 'rest-client'
 class CourseraApi
 
   def initialize
-      @api_base = "https://api.coursera.org/api/courses.v1"
+      @api_base = "https://api.coursera.org/api/courses.v1/"
   end
 
   def get_all_courses
-    res = RestClient.get(@api_base)
+    response = RestClient.get("#{@api_base}?fields=description,startDate")
+    json_response = JSON.parse(response)
   end
 
 end

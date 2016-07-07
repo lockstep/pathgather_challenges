@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Coursera Id</th>
       <th>Name</th>
       <th>Description</th>
       <th>Url</th>
@@ -16,9 +17,10 @@
   <tbody>
     <% @courses.each do |course| %>
       <tr>
+        <td><%= course.coursera_id %></td>
         <td><%= course.name %></td>
         <td><%= course.description %></td>
-        <td><%= course.url %></td>
+        <td><%= link_to course.url, course.url %></td>
         <td><%= course.start_date %></td>
         <td><%= link_to 'Show', course %></td>
         <td><%= link_to 'Edit', edit_course_path(course) %></td>
